@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 57917955
+CRC: 3308131149
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: de74e8526d46be0f8c7ff5d41bf8c3fa
+    Hash: d7f3b37f3cfe0bc2d378e2162bd210a6
   TypeTreeHash:
     serializedVersion: 2
-    Hash: ac794ceef167d1e0318f5b5a26415a10
+    Hash: efc09445f99e929e7d783c864792f4e0
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -48,6 +48,8 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 11500000, guid: 47a966c4d2f6f0b4b97e10d578a15f34, type: 3}
 - Class: 114
+  Script: {fileID: 11500000, guid: fa924cbae8d79e5499f2700bc74695c5, type: 3}
+- Class: 114
   Script: {fileID: 11500000, guid: 6b248ffcf9fd88141852326113f3eb8a, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 05833fcd474bcc94b9eea6d4d280a46e, type: 3}
@@ -55,8 +57,6 @@ ClassTypes:
   Script: {fileID: 11500000, guid: 37901c3ea7ca0c6448e16d69bc737cc0, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 0f772bce6da1bc1478df1455f5dd7390, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: fa924cbae8d79e5499f2700bc74695c5, type: 3}
 - Class: 115
   Script: {instanceID: 0}
 - Class: 128
@@ -78,7 +78,9 @@ Assets:
 - Assets/Prefabs/Map/Enemy.prefab
 - Assets/Prefabs/Map/Map1Test.prefab
 - Assets/Prefabs/Map/M_Cube.mat
+- Assets/Prefabs/Map/Map2.prefab
 - Assets/Prefabs/Map/RookieEnemy.prefab
+- Assets/Prefabs/Map/Map1.prefab
 - Assets/Prefabs/Map/Cube.prefab
 - Assets/Prefabs/Map/Player.prefab
 - Assets/Prefabs/Map/RookieJu.prefab
@@ -87,4 +89,4 @@ Assets:
 - Assets/Prefabs/Map/SkillPanel.prefab
 - Assets/Prefabs/Map/SkillBtn.prefab
 Dependencies:
-- D:/TencentLearning/MiniGame/MiniGameProj/Assets/StreamingAssets/AssetBundles/prefabs_map_material
+- "E:/Minigame2019\u76F8\u5173/minigame/MiniGameProj/Assets/StreamingAssets/AssetBundles/prefabs_map_material"

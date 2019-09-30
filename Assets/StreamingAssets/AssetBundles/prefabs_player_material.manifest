@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2287967403
+CRC: 3613353909
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: f0eac3dba69936cfd2c276ee37ff7c1b
+    Hash: cda88fa125a16924e3c12b6cfc9a226a
   TypeTreeHash:
     serializedVersion: 2
     Hash: 6f165f44e4778b6c9d85e7a145a54cb1
@@ -41,4 +41,4 @@ Assets:
 - Assets/Prefabs/Player/Material/woHorse.mat
 - Assets/Prefabs/Player/Material/xy_fce.mat
 Dependencies:
-- D:/TencentLearning/MiniGame/MiniGameProj/Assets/StreamingAssets/AssetBundles/prefabs_player_tex
+- "E:/Minigame2019\u76F8\u5173/minigame/MiniGameProj/Assets/StreamingAssets/AssetBundles/prefabs_player_tex"
