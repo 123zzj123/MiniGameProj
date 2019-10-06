@@ -5,6 +5,7 @@ using System;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
 using UnityEngine.UI;
+using System.Threading;
 
 
 namespace MiniProj
@@ -753,23 +754,29 @@ namespace MiniProj
                         if ((GameOver = m_enemyList[_i][_j].GetEnemyNextPos(YuJiExist)) != 0)
                         {
                             //吃子特效写在这，1副子， 2主子**
+
                         }
+
                     }
                 }
             }
 
             //遍历所有enemy,播位置变化的动画,update
+            
             for (int _i = 0; _i < m_enemyList.Count; _i++)
             {
                 for (int _j = 0; _j < m_enemyList[_i].Count; _j++)
                 {
                     if (m_enemyList[_i][_j] != null && !m_enemyList[_i][_j].m_EnemyIsMove)
                     {
+
                         m_enemyList[_i][_j].EnemyMove(_i, _j);
                        // m_enemyList[_i][_j].Update();
                     }
                 }
+
             }
+            
 
             //触发本局游戏结束
             if (GameOver != 0)
