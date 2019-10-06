@@ -37,7 +37,8 @@ namespace MiniProj
             }
             else if(m_id == 4)
             {
-
+                SceneModule _sceneModule = (SceneModule)GameManager.GameManagerObj.GetComponent<GameManager>().GetModuleByName("SceneModule");
+                _sceneModule.GotoNextScene();
             }
         }
     }

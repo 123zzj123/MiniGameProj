@@ -58,7 +58,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_id: 1
-  m_destroyTime: 2
+  m_destroyTime: 10
 --- !u!114 &114704669849260698
 MonoBehaviour:
   m_ObjectHideFlags: 1
