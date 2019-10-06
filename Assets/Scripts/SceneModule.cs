@@ -634,6 +634,25 @@ namespace MiniProj
                     }
 
                 }
+                else if(GameManager.SceneConfigId == 3 && 2 == m_SceneStep)
+                {
+                    List<int> _type = new List<int>();
+                    List<int> row = new List<int>();
+                    List<int> col = new List<int>();
+                    _type.Add(1);
+                    row.Add(9);
+                    col.Add(0);
+
+                    for (int _i = 0; _i < _type.Count; _i++)
+                    {
+                        GameObject _obj = (GameObject)GameManager.ResManager.LoadPrefabSync(PlayerPrefabPath, EnemyPrefabName[_type[_i]], typeof(GameObject));
+                        _obj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().SceneLayer);
+                        m_enemyList[row[_i]][col[_i]] = _obj.GetComponent<Enemy>();
+                        m_enemyList[row[_i]][col[_i]].SetType(_type[_i]);
+                        m_enemyList[row[_i]][col[_i]].SetStartPos(row[_i], col[_i]);
+
+                    }
+                }
                 ArrowAttack();
                 //ArrowTrigger();
                 
