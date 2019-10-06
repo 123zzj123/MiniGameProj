@@ -5,6 +5,7 @@ using System;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
 using UnityEngine.UI;
+using System.Threading;
 
 
 namespace MiniProj
@@ -640,6 +641,25 @@ namespace MiniProj
                     }
 
                 }
+                else if(GameManager.SceneConfigId == 3 && 2 == m_SceneStep)
+                {
+                    List<int> _type = new List<int>();
+                    List<int> row = new List<int>();
+                    List<int> col = new List<int>();
+                    _type.Add(1);
+                    row.Add(9);
+                    col.Add(0);
+
+                    for (int _i = 0; _i < _type.Count; _i++)
+                    {
+                        GameObject _obj = (GameObject)GameManager.ResManager.LoadPrefabSync(PlayerPrefabPath, EnemyPrefabName[_type[_i]], typeof(GameObject));
+                        _obj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().SceneLayer);
+                        m_enemyList[row[_i]][col[_i]] = _obj.GetComponent<Enemy>();
+                        m_enemyList[row[_i]][col[_i]].SetType(_type[_i]);
+                        m_enemyList[row[_i]][col[_i]].SetStartPos(row[_i], col[_i]);
+
+                    }
+                }
                 ArrowAttack();
                 //ArrowTrigger();
                 
@@ -783,23 +803,29 @@ namespace MiniProj
                         if ((GameOver = m_enemyList[_i][_j].GetEnemyNextPos(YuJiExist)) != 0)
                         {
                             //吃子特效写在这，1副子， 2主子**
+
                         }
+
                     }
                 }
             }
 
             //遍历所有enemy,播位置变化的动画,update
+            
             for (int _i = 0; _i < m_enemyList.Count; _i++)
             {
                 for (int _j = 0; _j < m_enemyList[_i].Count; _j++)
                 {
                     if (m_enemyList[_i][_j] != null && !m_enemyList[_i][_j].m_EnemyIsMove)
                     {
+
                         m_enemyList[_i][_j].EnemyMove(_i, _j);
                        // m_enemyList[_i][_j].Update();
                     }
                 }
+
             }
+            
 
             //触发本局游戏结束
             if (GameOver != 0)
