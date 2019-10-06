@@ -432,6 +432,7 @@ namespace MiniProj
                 m_playereff.Play();
                 m_hiteff.Play();
                 _sceneModule.m_enemyList[m_playerPos.m_row][m_playerPos.m_col].DestroyObj();
+                _sceneModule.m_enemyList[m_playerPos.m_row][m_playerPos.m_col] = null;
             }
             bool _bWait = _sceneModule.WaitNpc();
             if(_bWait)

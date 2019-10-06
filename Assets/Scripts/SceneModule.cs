@@ -169,7 +169,10 @@ namespace MiniProj
             {
                 GameManager.GameManagerObj.GetComponent<GameManager>().UnloadModule("RookieModule");
             }
-            m_player.DestroyObj();
+            if(m_player != null)
+            {
+                m_player.DestroyObj();
+            }
             GameObject.Destroy(m_sceneObj);
             GameObject.Destroy(m_skillPanelObj);
             GameObject.Destroy(m_sceneTargetObj);
@@ -184,7 +187,7 @@ namespace MiniProj
                     {
                         m_enemyList[_i][_j].DestroyObj();
                     }
-                    else if(m_npcList[_i][_j] != null)
+                    if(m_npcList[_i][_j] != null)
                     {
                         m_npcList[_i][_j].DestroyObj();
                     }
@@ -362,17 +365,27 @@ namespace MiniProj
                 else if (Ret == PlayerD.ALL)
                 {
                     m_player.DestroyObj();
+                    m_player = null;
+                    m_npcList[YuJiPos.m_row][YuJiPos.m_col].DestroyObj();
+                    m_npcList[YuJiPos.m_row][YuJiPos.m_col] = null;
+                    Debug.Log("项羽虞姬死了");
+                    ReplayScene();
                     //游戏结束
                 }
                 else if (Ret == PlayerD.YUJI)
                 {
                     m_npcList[YuJiPos.m_row][YuJiPos.m_col].DestroyObj();
+                    m_npcList[YuJiPos.m_row][YuJiPos.m_col] = null;
+                    Debug.Log("虞姬死了");
+                    ReplayScene();
                     //游戏结束
                 }
                 else if(Ret == PlayerD.XIANGYU)
                 {
                     m_player.DestroyObj();
-                    m_npcList[YuJiPos.m_row][YuJiPos.m_col].DestroyObj();
+                    m_player = null;
+                    Debug.Log("项羽死了");
+                    ReplayScene();
                     //游戏结束
                 }
 
@@ -832,10 +845,20 @@ namespace MiniProj
             {
                 if (YuJiExist && GameOver == 1)
                 {
+                    m_npcList[YuJiPos.m_row][YuJiPos.m_col].DestroyObj();
+                    m_npcList[YuJiPos.m_row][YuJiPos.m_col] = null;
+                    Debug.Log("虞姬死了");
+                    ReplayScene();
                     //虞姬死了
                 }
-                //项羽死了
-
+                else
+                {
+                    m_player.DestroyObj();
+                    m_player = null;
+                    //项羽死了
+                    Debug.Log("项羽死了");
+                    ReplayScene();
+                }
             }
         }
 

@@ -417,6 +417,7 @@ namespace MiniProj
                 if(m_btnList[_i].GetComponent<SkillBtn>().Id == id)
                 {
                     m_btnList[_i].GetComponent<Button>().interactable = true;
+                    m_btnList[_i].GetComponent<SkillBtn>().Initial(id, 1);
                 }
             }
             SceneModule _sceneModule = (SceneModule)GameManager.GameManagerObj.GetComponent<GameManager>().GetModuleByName("SceneModule");

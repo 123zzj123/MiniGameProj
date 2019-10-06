@@ -20,11 +20,11 @@ MonoBehaviour:
     m_playerStartCol: 3
     m_skillData:
     - m_id: 1
-      m_count: 1
+      m_count: 0
     - m_id: 3
-      m_count: 2
+      m_count: 0
     - m_id: 0
-      m_count: 1
+      m_count: 0
     m_enemyData: []
     m_npcPosData: []
     m_Arrow: []
@@ -203,7 +203,7 @@ MonoBehaviour:
     m_backgroundName: BackGround3
     m_mapRow: 11
     m_mapCol: 7
-    m_playerStartRow: 9
+    m_playerStartRow: 8
     m_playerStartCol: 3
     m_skillData:
     - m_id: 1
@@ -211,31 +211,31 @@ MonoBehaviour:
     m_enemyData:
     - m_type: 1
       m_pos:
-        m_row: 8
+        m_row: 7
         m_col: 1
-    - m_type: 4
-      m_pos:
-        m_row: 6
-        m_col: 6
     - m_type: 1
       m_pos:
-        m_row: 5
+        m_row: 4
         m_col: 6
+    - m_type: 4
+      m_pos:
+        m_row: 5
+        m_col: 5
     m_npcPosData:
     - m_npcPosData:
-      - m_row: 10
-        m_col: 3
-      - m_row: 10
-        m_col: 3
-      - m_row: 10
-        m_col: 3
-      - m_row: 10
-        m_col: 3
-      - m_row: 10
-        m_col: 3
-      - m_row: 6
+      - m_row: 9
         m_col: 2
-      - m_row: 6
+      - m_row: 9
+        m_col: 2
+      - m_row: 9
+        m_col: 2
+      - m_row: 9
+        m_col: 2
+      - m_row: 9
+        m_col: 2
+      - m_row: 7
+        m_col: 2
+      - m_row: 7
         m_col: 2
     m_Arrow: []
     m_Rock:
