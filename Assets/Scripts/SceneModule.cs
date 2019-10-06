@@ -358,17 +358,20 @@ namespace MiniProj
                 {
                     m_player.DestroyObj();
                     //游戏结束
+                    Debug.Log("死了");
                 }
                 else if (Ret == PlayerD.YUJI)
                 {
                     m_npcList[YuJiPos.m_row][YuJiPos.m_col].DestroyObj();
                     //游戏结束
+                    Debug.Log("死了");
                 }
                 else if(Ret == PlayerD.XIANGYU)
                 {
                     m_player.DestroyObj();
                     m_npcList[YuJiPos.m_row][YuJiPos.m_col].DestroyObj();
                     //游戏结束
+                    Debug.Log("死了");
                 }
 
             }
@@ -784,9 +787,10 @@ namespace MiniProj
                 if (YuJiExist && GameOver == 1)
                 {
                     //虞姬死了
+                    Debug.Log("死了");
                 }
                 //项羽死了
-
+                Debug.Log("死了");
             }
         }
 
