@@ -816,10 +816,14 @@ namespace MiniProj
                         if ((GameOver = m_enemyList[_i][_j].GetEnemyNextPos(YuJiExist)) != 0)
                         {
                             //吃子特效写在这，1副子， 2主子**
-
+                            break;
                         }
 
                     }
+                }
+                if(GameOver != 0)
+                {
+                    break;
                 }
             }
 
