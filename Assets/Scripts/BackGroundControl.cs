@@ -30,10 +30,15 @@ namespace MiniProj
             {
                 GameManager.GameManagerObj.GetComponent<GameManager>().LoadModule("RookieModule");
             }
-            if(GameManager.SceneConfigId == 1)
+            else if(GameManager.SceneConfigId == 1)
             {
                 GameObject _introduce3 = (GameObject)GameManager.ResManager.LoadPrefabSync(MapPrefabPath, "IntroducePanel3", typeof(GameObject));
                 _introduce3.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().UILayer, false);
+            }
+            else if (GameManager.SceneConfigId == 2)
+            {
+                GameObject _introduce4 = (GameObject)GameManager.ResManager.LoadPrefabSync(MapPrefabPath, "IntroducePanel4", typeof(GameObject));
+                _introduce4.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().UILayer, false);
             }
             else if(GameManager.SceneConfigId == 4)
             {

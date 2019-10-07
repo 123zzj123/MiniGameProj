@@ -234,8 +234,8 @@ namespace MiniProj
                 return;
             }
             GameManager.GameManagerObj.GetComponent<GameManager>().UnloadModule("SceneModule");
-            GameManager.SceneConfigId = 4;
-            //++GameManager.SceneConfigId;
+            //GameManager.SceneConfigId = 4;
+            ++GameManager.SceneConfigId;
             SceneManager.LoadScene(ConfigIdToSceneIdx[GameManager.SceneConfigId]);
             GameManager.GameManagerObj.GetComponent<GameManager>().LoadBGM(GameManager.SceneConfigId + 1);
             Audio_BGM.Instance.LvBGM(GameManager.SceneConfigId + 1);

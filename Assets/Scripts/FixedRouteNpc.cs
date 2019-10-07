@@ -129,7 +129,16 @@ namespace MiniProj
         {
             if (other.gameObject.tag == "Enemy")
             {
-                DestroyObj();
+                Enemy _enemy = other.gameObject.GetComponent<Enemy>();
+                if(_enemy != null)
+                {
+                    MapPos _mapPos = _enemy.m_EnemyPosNew;
+                    if(_mapPos.m_row == m_playerPos.m_row && _mapPos.m_col == m_playerPos.m_col)
+                    {
+                        DestroyObj();
+                    }
+                }
+                
             }
         }
     }

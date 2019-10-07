@@ -21,7 +21,8 @@ GameObject:
   - component: {fileID: 224931625104514932}
   - component: {fileID: 222719749820978368}
   - component: {fileID: 114375158882085550}
-  - component: {fileID: 114557222225578002}
+  - component: {fileID: 95496289230900498}
+  - component: {fileID: 114217987526280304}
   m_Layer: 5
   m_Name: IntroducePanel1
   m_TagString: Untagged
@@ -29,6 +30,36 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!95 &95496289230900498
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1480691097809948}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 78dedd7a5f65e754fa0c1f16890d53d7, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114217987526280304
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1480691097809948}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24bdacc3533a1044494e10f3ce77c017, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_destroyTime: 5
+  m_click: 0
 --- !u!114 &114375158882085550
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -56,18 +87,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114557222225578002
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1480691097809948}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e080658fb6e4f274c8b168956e6c601d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_destroyTime: 5
 --- !u!222 &222719749820978368
 CanvasRenderer:
   m_ObjectHideFlags: 1
