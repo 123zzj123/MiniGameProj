@@ -371,6 +371,7 @@ namespace MiniProj
                     Debug.Log("项羽虞姬死了");
                     ReplayScene();
                     //游戏结束
+                    Debug.Log("死了");
                 }
                 else if (Ret == PlayerD.YUJI)
                 {
@@ -379,6 +380,7 @@ namespace MiniProj
                     Debug.Log("虞姬死了");
                     ReplayScene();
                     //游戏结束
+                    Debug.Log("死了");
                 }
                 else if(Ret == PlayerD.XIANGYU)
                 {
@@ -387,6 +389,7 @@ namespace MiniProj
                     Debug.Log("项羽死了");
                     ReplayScene();
                     //游戏结束
+                    Debug.Log("死了");
                 }
 
             }
@@ -854,6 +857,7 @@ namespace MiniProj
                     Debug.Log("虞姬死了");
                     ReplayScene();
                     //虞姬死了
+                    Debug.Log("死了");
                 }
                 else
                 {
