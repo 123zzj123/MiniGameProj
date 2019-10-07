@@ -9,6 +9,7 @@ namespace MiniProj
     public class RookieModule : Module
     {
         private static string PlayerPrefabPath = "Prefabs/Player";
+        private static string MapPrefabPath = "Prefabs/Map";
         private int m_step = 0;
 
         private List<long> m_timerIdList;
@@ -62,10 +63,14 @@ namespace MiniProj
                 m_btnList.Add(_btnObj);
                 _btnObj.GetComponent<Button>().interactable = false;
             }
+
+            GameObject _introduce2 = (GameObject)GameManager.ResManager.LoadPrefabSync(MapPrefabPath, "IntroducePanel2", typeof(GameObject));
+            _introduce2.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().UILayer, false);
+
             LoadRookieEnemies();
-            long _id = TimerManager.StartTimer(1000, false, null, DelayExecuteRookieEnemies, 0);
+            long _id = TimerManager.StartTimer(4500, false, null, DelayExecuteRookieEnemies, 0);
             m_timerIdList.Add(_id);
-            _id = TimerManager.StartTimer(1500, false, null, DelayLoadRookieMa, 0);
+            _id = TimerManager.StartTimer(7000, false, null, DelayLoadRookieMa, 0);
             m_timerIdList.Add(_id);
             EventManager.RegisterEvent(HLEventId.PLAYER_END_MOVE, this.GetHashCode(), FollowPlayer);
         }
@@ -128,6 +133,9 @@ namespace MiniProj
 
         private void DelayLoadRookieMa(EventArgs args)
         {
+            GameObject _introduce1 = (GameObject)GameManager.ResManager.LoadPrefabSync(MapPrefabPath, "IntroducePanel1", typeof(GameObject));
+            _introduce1.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().UILayer, false);
+
             LoadRookieMa();
             long _id = TimerManager.StartTimer(1000, false, null, DelayActiveMaBtn, 0);
             m_timerIdList.Add(_id);

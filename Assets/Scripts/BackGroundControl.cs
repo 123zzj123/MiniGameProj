@@ -7,7 +7,8 @@ namespace MiniProj
     public class BackGroundControl : MonoBehaviour
     {
         public float m_destroyTime;
-        private bool m_click = false;
+        public bool m_click = false;
+        private static string MapPrefabPath = "Prefabs/Map";
         // Use this for initialization
         void Start()
         {
@@ -28,6 +29,11 @@ namespace MiniProj
             if(GameManager.SceneConfigId == 0)
             {
                 GameManager.GameManagerObj.GetComponent<GameManager>().LoadModule("RookieModule");
+            }
+            if(GameManager.SceneConfigId == 1)
+            {
+                GameObject _introduce3 = (GameObject)GameManager.ResManager.LoadPrefabSync(MapPrefabPath, "IntroducePanel3", typeof(GameObject));
+                _introduce3.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().UILayer, false);
             }
             else if(GameManager.SceneConfigId == 4)
             {

@@ -48,10 +48,10 @@ namespace MiniProj
             EventManager.RegisterEvent(HLEventId.PLAYER_START_MOVE, this.GetHashCode(), PlayerMove);
         }
 
-        //public void UnregisterEvents()
-        //{
+        public void ShowNewModeTips()
+        {
 
-        //}
+        }
 
         private void OnDestroy()
         {

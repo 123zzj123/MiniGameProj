@@ -50,6 +50,11 @@ namespace MiniProj
             GameObject.Destroy(this.gameObject);
         }
 
+        private void OnDestroy()
+        {
+            EventManager.UnregisterEvent(HLEventId.USE_SKILL, this.GetHashCode());
+        }
+
         public void SetStartPosition(int row, int col)
         {
             m_playerPos.m_row = row;
@@ -459,6 +464,14 @@ namespace MiniProj
         public void SetCanMove(bool bState)
         {
             m_move = bState;
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if(other.gameObject.tag == "Enemy")
+            {
+                DestroyObj();
+            }
         }
     }
 
