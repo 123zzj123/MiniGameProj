@@ -669,6 +669,44 @@ namespace MiniProj
 
                 }
             }
+            else if(GameManager.SceneConfigId == 3 && 5 == m_SceneStep)
+            {
+                List<int> _type = new List<int>();
+                List<int> row = new List<int>();
+                List<int> col = new List<int>();
+                _type.Add(1);
+                row.Add(9);
+                col.Add(4);
+
+                for (int _i = 0; _i < _type.Count; _i++)
+                {
+                    GameObject _obj = (GameObject)GameManager.ResManager.LoadPrefabSync(PlayerPrefabPath, EnemyPrefabName[_type[_i]], typeof(GameObject));
+                    _obj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().SceneLayer);
+                    m_enemyList[row[_i]][col[_i]] = _obj.GetComponent<Enemy>();
+                    m_enemyList[row[_i]][col[_i]].SetType(_type[_i]);
+                    m_enemyList[row[_i]][col[_i]].SetStartPos(row[_i], col[_i]);
+
+                }
+            }
+            else if (GameManager.SceneConfigId == 3 && 6 == m_SceneStep)
+            {
+                List<int> _type = new List<int>();
+                List<int> row = new List<int>();
+                List<int> col = new List<int>();
+                _type.Add(2);
+                row.Add(9);
+                col.Add(5);
+
+                for (int _i = 0; _i < _type.Count; _i++)
+                {
+                    GameObject _obj = (GameObject)GameManager.ResManager.LoadPrefabSync(PlayerPrefabPath, EnemyPrefabName[_type[_i]], typeof(GameObject));
+                    _obj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().SceneLayer);
+                    m_enemyList[row[_i]][col[_i]] = _obj.GetComponent<Enemy>();
+                    m_enemyList[row[_i]][col[_i]].SetType(_type[_i]);
+                    m_enemyList[row[_i]][col[_i]].SetStartPos(row[_i], col[_i]);
+
+                }
+            }
         }
 
         //返回0 没有虞姬 ，返回1 有虞姬，已经更新位置
