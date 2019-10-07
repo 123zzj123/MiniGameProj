@@ -83,6 +83,10 @@ namespace MiniProj
             {
                 m_count--;
                 m_skillCountText.text = m_count.ToString();
+                if(m_count == 0)
+                {
+                    this.GetComponent<Button>().interactable = false;
+                }
             }
 
         }
