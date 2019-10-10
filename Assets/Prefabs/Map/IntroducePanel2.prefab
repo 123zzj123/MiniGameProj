@@ -85,7 +85,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24bdacc3533a1044494e10f3ce77c017, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_destroyTime: 4
+  m_destroyTime: 5
   m_click: 1
 --- !u!222 &222601412895948600
 CanvasRenderer:

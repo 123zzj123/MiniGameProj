@@ -15,7 +15,7 @@ namespace MiniProj
     public class Player : MonoBehaviour
     {
         [SerializeField]
-        private MapPos m_playerPos;
+        public MapPos m_playerPos;
         private ParticleSystem m_playereff;
         private ParticleSystem m_hiteff;
         public MapPos Pos
@@ -47,7 +47,10 @@ namespace MiniProj
 
         public void DestroyObj()
         {
-            GameObject.Destroy(this.gameObject);
+            if (this != null)
+            {
+                GameObject.Destroy(this.gameObject);
+            }
         }
 
         private void OnDestroy()
@@ -370,6 +373,8 @@ namespace MiniProj
                             float _targetPosZ = _data.Pos.m_col * DiffZ;
                             if(m_skillId == SkillId.JU)
                             {
+                                MissionList.Instance.jutimes++;
+                                MissionList.Instance.Judgemission();
                                 Sequence _sequence = DOTween.Sequence();
                                 _sequence.Append(transform.DOMove(new Vector3(_targetPosX, this.transform.position.y, _targetPosZ), 0.4f).SetEase(m_juCurve));
                                 _sequence.AppendCallback(MoveEnd);
@@ -377,6 +382,8 @@ namespace MiniProj
                             }
                             else if(m_skillId == SkillId.MA || m_skillId == SkillId.PAO)
                             {
+                                MissionList.Instance.matimes++;
+                                MissionList.Instance.Judgemission();
                                 float _targetPosY = 0f;
                                 if (_data.Data == MapDataType.GAOTAI)
                                 {
@@ -412,6 +419,8 @@ namespace MiniProj
                             }
                             else if(m_skillId == SkillId.XIANG)
                             {
+                                MissionList.Instance.xiangtimes++;
+                                MissionList.Instance.Judgemission();
                                 float _targetPosY = 0f;
                                 if (_data.Data == MapDataType.GAOTAI)
                                 {
@@ -433,7 +442,7 @@ namespace MiniProj
 
 
 
-        private void MoveEnd()
+        public void MoveEnd()
         {
             m_state = State.Idle;
             m_move = false;
@@ -445,6 +454,7 @@ namespace MiniProj
             }
             else
             {
+                MissionList.Instance.enemykilled++;
                 AudioFx.Instance.pawnhit();
                 m_playereff.Play();
                 m_hiteff.Play();
@@ -482,8 +492,19 @@ namespace MiniProj
         {
             if(other.gameObject.tag == "Enemy" && !m_move)
             {
-                DestroyObj();
+                Invoke("delayLoadFailpanel", 0.7f);
+                gameObject.SetActive(false);                
             }
+        }
+
+        private void delayLoadFailpanel()
+        {
+            SceneModule _sceneModule = (SceneModule)GameManager.GameManagerObj.GetComponent<GameManager>().GetModuleByName("SceneModule");
+            if (!_sceneModule.m_sceneWin)
+            {
+                _sceneModule.LoadFailpanel("项羽阵亡");
+                DestroyObj();
+            }            
         }
     }
 

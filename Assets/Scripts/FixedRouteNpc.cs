@@ -25,7 +25,10 @@ namespace MiniProj
 
         public void DestroyObj()
         {
-            GameObject.Destroy(this.gameObject);
+            if (this != null)
+            {
+                GameObject.Destroy(this.gameObject);
+            }
         }
 
         private void OnDestroy()
@@ -135,10 +138,21 @@ namespace MiniProj
                     MapPos _mapPos = _enemy.m_EnemyPosNew;
                     if(_mapPos.m_row == m_playerPos.m_row && _mapPos.m_col == m_playerPos.m_col)
                     {
-                        DestroyObj();
+                        Invoke("delayLoadFailpanel", 0.7f);
+                        gameObject.SetActive(false);
                     }
                 }
                 
+            }
+        }
+
+        private void delayLoadFailpanel()
+        {
+            SceneModule _sceneModule = (SceneModule)GameManager.GameManagerObj.GetComponent<GameManager>().GetModuleByName("SceneModule");
+            if (!_sceneModule.m_sceneWin)
+            {
+                _sceneModule.LoadFailpanel("虞姬阵亡");
+                DestroyObj();
             }
         }
     }

@@ -38,10 +38,13 @@ namespace MiniProj
         private int m_SceneStep;
         private int m_waitCount;
         private int m_npcCount;
+        private float EmissPower = 1.0f;
         private GameObject m_sceneObj;
         private GameObject m_skillPanelObj;
         private GameObject m_sceneTargetObj;
         private GameObject m_sceneMenuObject;
+        private GameObject m_failPanelObject;
+        private GameObject m_winPanelObject;
 
         public SceneConfig m_config;
         public Player m_player;
@@ -49,7 +52,7 @@ namespace MiniProj
         private List<Material> m_matList;
         private List<Color> m_originColorList;
         private List<SkillBtn> m_skillBtnList;
-        private bool m_sceneWin = false;
+        public bool m_sceneWin = false;
 
         public SceneModule() : base("SceneModule")
         {
@@ -75,7 +78,7 @@ namespace MiniProj
             "SkillBtnJu"
         };
 
-        private static int[] ConfigIdToSceneIdx =
+        public static int[] ConfigIdToSceneIdx =
         {
             1,2,3,3,3,
         };
@@ -148,6 +151,14 @@ namespace MiniProj
             GameObject.Destroy(m_skillPanelObj);
             GameObject.Destroy(m_sceneTargetObj);
             GameObject.Destroy(m_sceneMenuObject);
+            if (m_failPanelObject != null)
+            {
+                GameObject.Destroy(m_failPanelObject);
+            }
+            if (m_winPanelObject != null)
+            {
+                GameObject.Destroy(m_winPanelObject);
+            }          
             EventManager.UnregisterEvent(HLEventId.NPC_END_MOVE, this.GetHashCode());
             EventManager.UnregisterEvent(HLEventId.ROUND_FAIL, this.GetHashCode());
         }
@@ -177,6 +188,14 @@ namespace MiniProj
             GameObject.Destroy(m_skillPanelObj);
             GameObject.Destroy(m_sceneTargetObj);
             GameObject.Destroy(m_sceneMenuObject);
+            if (m_failPanelObject != null)
+            {
+                GameObject.Destroy(m_failPanelObject);
+            }
+            if (m_winPanelObject != null)
+            {
+                GameObject.Destroy(m_winPanelObject);
+            }
             int _row = m_config.SceneConfigList[GameManager.SceneConfigId].MapRow;
             int _col = m_config.SceneConfigList[GameManager.SceneConfigId].MapCol;
             for (int _i = 0; _i < _row; ++_i)
@@ -207,6 +226,13 @@ namespace MiniProj
             //LoadRookieModule();
 
         }
+        //weisheng
+        void weishengend()
+        {
+            GameObject obj = GameObject.Find("weisheng(Clone)");
+            Destroy(obj);
+            GotoMainMenu();
+        }
 
         //进入主菜单
         private void GotoMainMenu()
@@ -216,9 +242,11 @@ namespace MiniProj
                 GameManager.GameManagerObj.GetComponent<GameManager>().UnloadModule("RookieModule");
             }
             GameManager.GameManagerObj.GetComponent<GameManager>().UnloadModule("SceneModule");
+            Audio_BGM.Instance.LvBGM(0);
             SceneManager.LoadScene(0);
             GameManager.GameManagerObj.GetComponent<GameManager>().LoadModule("MainMenuModule");
             GameManager.GameManagerObj.GetComponent<GameManager>().LoadBGM(0);
+            
             //SceneManager.LoadScene(0);
         }
 
@@ -234,12 +262,13 @@ namespace MiniProj
                 return;
             }
             GameManager.GameManagerObj.GetComponent<GameManager>().UnloadModule("SceneModule");
-            //GameManager.SceneConfigId = 4;
-            ++GameManager.SceneConfigId;
+            GameManager.SceneConfigId++;
+            //++GameManager.SceneConfigId;
             SceneManager.LoadScene(ConfigIdToSceneIdx[GameManager.SceneConfigId]);
             GameManager.GameManagerObj.GetComponent<GameManager>().LoadBGM(GameManager.SceneConfigId + 1);
             Audio_BGM.Instance.LvBGM(GameManager.SceneConfigId + 1);
             GameManager.GameManagerObj.GetComponent<GameManager>().LoadModule("SceneModule");
+            
         }
 
         private void LoadBackground()
@@ -367,16 +396,29 @@ namespace MiniProj
                 {
                     _gameOver = 3;
                     Debug.Log("项羽虞姬死了");
+                    //if (!m_sceneWin)
+                    //{
+                    //    LoadFailpanel("虞姬阵亡");
+                    //}
                 }
                 else if (Ret == PlayerD.YUJI)
                 {
                     _gameOver = 1;
                     Debug.Log("虞姬死了");
+                    //if (!m_sceneWin)
+                    //{
+                    //    LoadFailpanel("虞姬阵亡");
+                    //}
+
                 }
                 else if(Ret == PlayerD.XIANGYU)
                 {
                     _gameOver = 2;
                     Debug.Log("项羽死了");
+                    //if (!m_sceneWin)
+                    //{
+                    //    LoadFailpanel("项羽阵亡");
+                    //}
                 }
 
             }
@@ -446,6 +488,36 @@ namespace MiniProj
             m_sceneMenuObject.transform.Find("Button").GetComponent<Button>().onClick.AddListener(ReplayScene);
             m_sceneMenuObject.transform.Find("Button1").GetComponent<Button>().onClick.AddListener(GotoMainMenu);
             m_sceneMenuObject.transform.Find("Button2").GetComponent<Button>().onClick.AddListener(GotoNextScene);
+            m_sceneMenuObject.transform.Find("Button3").GetComponent<Button>().onClick.AddListener(Loadmissionpanel);
+        }
+
+        private void Loadmissionpanel()
+        {
+            GameObject _winpanelObj = (GameObject)GameManager.ResManager.LoadPrefabSync(MapPrefabPath, "winpanel", typeof(GameObject));
+            _winpanelObj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().UILayer, false);
+            m_winPanelObject = _winpanelObj;
+            m_winPanelObject.transform.Find("skipButton").GetComponent<Button>().onClick.AddListener(() => { Destroy(m_winPanelObject); });
+            m_winPanelObject.GetComponent<winpanelcontrol>().Lvmission();
+        }
+
+        private void LoadWinpanel()
+        {
+            GameObject _winpanelObj = (GameObject)GameManager.ResManager.LoadPrefabSync(MapPrefabPath, "winwin", typeof(GameObject));
+            _winpanelObj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().UILayer, false);
+            m_winPanelObject = _winpanelObj;
+            m_winPanelObject.transform.Find("skipButton").GetComponent<Button>().onClick.AddListener(GotoNextScene);
+            m_winPanelObject.GetComponent<winpanelcontrol>().Lvmission();
+        }
+
+        public void LoadFailpanel(string siwayuanyin)
+        {
+            GameObject _faipanelObj = (GameObject)GameManager.ResManager.LoadPrefabSync(MapPrefabPath, "faipanel", typeof(GameObject));
+            _faipanelObj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().UILayer, false);
+            m_failPanelObject = _faipanelObj;
+            m_failPanelObject.transform.Find("Buttonchu").GetComponent<Button>().onClick.AddListener(ReplayScene);
+            m_failPanelObject.transform.Find("Buttonfan").GetComponent<Button>().onClick.AddListener(GotoMainMenu);
+            m_failPanelObject.transform.Find("Buttonguo").GetComponent<Button>().onClick.AddListener(GotoNextScene);
+            m_failPanelObject.transform.Find("siwayuanyin").GetComponent<Text>().text = siwayuanyin;
         }
 
         private void InitialSkillBtnData()
@@ -456,6 +528,7 @@ namespace MiniProj
         private void LoadPlayer()
         {
             m_player = null;
+            MissionList.Instance.Cleardata();
             string _name = "xiangyu";
             GameObject _playerPrefab = (GameObject)GameManager.ResManager.LoadPrefabSync(PlayerPrefabPath, _name, typeof(GameObject));
             _playerPrefab.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().SceneLayer);
@@ -537,7 +610,7 @@ namespace MiniProj
             //到达终点
             if (m_sceneWin)
             {
-                GotoNextScene();
+                //GotoNextScene();
                 return false;
             }
             
@@ -553,21 +626,42 @@ namespace MiniProj
             }
         }
 
+        //public void NpcComplete(EventArgs args)
+        //{
+        //    if(m_waitCount > 0)
+        //    {
+        //        --m_waitCount;
+        //    }
+        //    if (m_waitCount == 0)
+        //    {
+        //        m_SceneStep++;
+        //        int _gameOver = EnemyListUpdate();
+        //        //if(_gameOver == 0)
+        //        //{
+        //        //    _gameOver = ArrowAttack();
+        //        //}
+        //        CheckSkillCount(_gameOver);
+        //        m_player.SetCanMove(_gameOver == 0);
+        //        LoadSpecilEmeny();
+        //        //ArrowTrigger();
+
+        //    }
+        //}
         public void NpcComplete(EventArgs args)
         {
-            if(m_waitCount > 0)
+            if (m_waitCount > 0)
             {
                 --m_waitCount;
             }
             if (m_waitCount == 0)
             {
                 m_SceneStep++;
-                int _gameOver = EnemyListUpdate();
-                if(_gameOver == 0)
+                int _gameOver = CheckSkillCount();
+                if (_gameOver == 0 && !m_sceneWin)
                 {
-                    _gameOver = ArrowAttack();
+                    _gameOver = EnemyListUpdate(_gameOver);
                 }
-                CheckSkillCount(_gameOver);
+
                 m_player.SetCanMove(_gameOver == 0);
                 LoadSpecilEmeny();
                 //ArrowTrigger();
@@ -596,13 +690,17 @@ namespace MiniProj
                 row.Add(10);
                 col.Add(3);
 
+
                 for (int _i = 0; _i < _type.Count; _i++)
                 {
-                    GameObject _obj = (GameObject)GameManager.ResManager.LoadPrefabSync(PlayerPrefabPath, EnemyPrefabName[_type[_i]], typeof(GameObject));
-                    _obj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().SceneLayer);
-                    m_enemyList[row[_i]][col[_i]] = _obj.GetComponent<Enemy>();
-                    m_enemyList[row[_i]][col[_i]].SetType(_type[_i]);
-                    m_enemyList[row[_i]][col[_i]].SetStartPos(row[_i], col[_i]);
+                    if (m_enemyList[row[_i]][col[_i]] == null && !(m_player.m_playerPos.m_row == row[_i] && m_player.m_playerPos.m_col == col[_i]) && !m_npcList[row[_i]][col[_i]])
+                    {
+                        GameObject _obj = (GameObject)GameManager.ResManager.LoadPrefabSync(PlayerPrefabPath, EnemyPrefabName[_type[_i]], typeof(GameObject));
+                        _obj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().SceneLayer);                    
+                        m_enemyList[row[_i]][col[_i]] = _obj.GetComponent<Enemy>();
+                        m_enemyList[row[_i]][col[_i]].SetType(_type[_i]);
+                        m_enemyList[row[_i]][col[_i]].SetStartPos(row[_i], col[_i]);
+                    }
 
                 }
             }
@@ -641,11 +739,15 @@ namespace MiniProj
 
                 for (int _i = 0; _i < _type.Count; _i++)
                 {
-                    GameObject _obj = (GameObject)GameManager.ResManager.LoadPrefabSync(PlayerPrefabPath, EnemyPrefabName[_type[_i]], typeof(GameObject));
-                    _obj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().SceneLayer);
-                    m_enemyList[row[_i]][col[_i]] = _obj.GetComponent<Enemy>();
-                    m_enemyList[row[_i]][col[_i]].SetType(_type[_i]);
-                    m_enemyList[row[_i]][col[_i]].SetStartPos(row[_i], col[_i]);
+                    if (m_enemyList[row[_i]][col[_i]] == null && !(m_player.m_playerPos.m_row == row[_i] && m_player.m_playerPos.m_col == col[_i]) && !m_npcList[row[_i]][col[_i]])
+                    {
+                        GameObject _obj = (GameObject)GameManager.ResManager.LoadPrefabSync(PlayerPrefabPath, EnemyPrefabName[_type[_i]], typeof(GameObject));
+                        _obj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().SceneLayer);
+
+                        m_enemyList[row[_i]][col[_i]] = _obj.GetComponent<Enemy>();
+                        m_enemyList[row[_i]][col[_i]].SetType(_type[_i]);
+                        m_enemyList[row[_i]][col[_i]].SetStartPos(row[_i], col[_i]);
+                    }
 
                 }
 
@@ -661,11 +763,15 @@ namespace MiniProj
 
                 for (int _i = 0; _i < _type.Count; _i++)
                 {
-                    GameObject _obj = (GameObject)GameManager.ResManager.LoadPrefabSync(PlayerPrefabPath, EnemyPrefabName[_type[_i]], typeof(GameObject));
-                    _obj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().SceneLayer);
-                    m_enemyList[row[_i]][col[_i]] = _obj.GetComponent<Enemy>();
-                    m_enemyList[row[_i]][col[_i]].SetType(_type[_i]);
-                    m_enemyList[row[_i]][col[_i]].SetStartPos(row[_i], col[_i]);
+                    if (m_enemyList[row[_i]][col[_i]] == null && !(m_player.m_playerPos.m_row == row[_i] && m_player.m_playerPos.m_col == col[_i]) && !m_npcList[row[_i]][col[_i]])
+                    {
+                        GameObject _obj = (GameObject)GameManager.ResManager.LoadPrefabSync(PlayerPrefabPath, EnemyPrefabName[_type[_i]], typeof(GameObject));
+                        _obj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().SceneLayer);
+
+                        m_enemyList[row[_i]][col[_i]] = _obj.GetComponent<Enemy>();
+                        m_enemyList[row[_i]][col[_i]].SetType(_type[_i]);
+                        m_enemyList[row[_i]][col[_i]].SetStartPos(row[_i], col[_i]);
+                    }
 
                 }
             }
@@ -680,11 +786,15 @@ namespace MiniProj
 
                 for (int _i = 0; _i < _type.Count; _i++)
                 {
-                    GameObject _obj = (GameObject)GameManager.ResManager.LoadPrefabSync(PlayerPrefabPath, EnemyPrefabName[_type[_i]], typeof(GameObject));
-                    _obj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().SceneLayer);
-                    m_enemyList[row[_i]][col[_i]] = _obj.GetComponent<Enemy>();
-                    m_enemyList[row[_i]][col[_i]].SetType(_type[_i]);
-                    m_enemyList[row[_i]][col[_i]].SetStartPos(row[_i], col[_i]);
+                    if (m_enemyList[row[_i]][col[_i]] == null && !(m_player.m_playerPos.m_row == row[_i] && m_player.m_playerPos.m_col == col[_i]) && !m_npcList[row[_i]][col[_i]])
+                    {
+                        GameObject _obj = (GameObject)GameManager.ResManager.LoadPrefabSync(PlayerPrefabPath, EnemyPrefabName[_type[_i]], typeof(GameObject));
+                        _obj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().SceneLayer);
+
+                        m_enemyList[row[_i]][col[_i]] = _obj.GetComponent<Enemy>();
+                        m_enemyList[row[_i]][col[_i]].SetType(_type[_i]);
+                        m_enemyList[row[_i]][col[_i]].SetStartPos(row[_i], col[_i]);
+                    }
 
                 }
             }
@@ -699,11 +809,15 @@ namespace MiniProj
 
                 for (int _i = 0; _i < _type.Count; _i++)
                 {
-                    GameObject _obj = (GameObject)GameManager.ResManager.LoadPrefabSync(PlayerPrefabPath, EnemyPrefabName[_type[_i]], typeof(GameObject));
-                    _obj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().SceneLayer);
-                    m_enemyList[row[_i]][col[_i]] = _obj.GetComponent<Enemy>();
-                    m_enemyList[row[_i]][col[_i]].SetType(_type[_i]);
-                    m_enemyList[row[_i]][col[_i]].SetStartPos(row[_i], col[_i]);
+                    if (m_enemyList[row[_i]][col[_i]] == null && !(m_player.m_playerPos.m_row == row[_i] && m_player.m_playerPos.m_col == col[_i]) && !m_npcList[row[_i]][col[_i]])
+                    {
+                        GameObject _obj = (GameObject)GameManager.ResManager.LoadPrefabSync(PlayerPrefabPath, EnemyPrefabName[_type[_i]], typeof(GameObject));
+                        _obj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().SceneLayer);
+
+                        m_enemyList[row[_i]][col[_i]] = _obj.GetComponent<Enemy>();
+                        m_enemyList[row[_i]][col[_i]].SetType(_type[_i]);
+                        m_enemyList[row[_i]][col[_i]].SetStartPos(row[_i], col[_i]);
+                    }
 
                 }
             }
@@ -782,25 +896,33 @@ namespace MiniProj
 
         private void LoadTipsPrefab3()
         {
+            print("11");
             GameObject _obj = (GameObject)GameManager.ResManager.LoadPrefabSync(TipPrefabPath, "TipPanel3", typeof(GameObject));
             _obj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().UILayer, false);
         }
 
-		private void CheckSkillCount(int gameOver)
+        public void Loadweisheng()
         {
-            if(gameOver != 0)
-            {
-                return;
-            }
+            GameObject _obj = (GameObject)GameManager.ResManager.LoadPrefabSync(TipPrefabPath, "weisheng", typeof(GameObject));
+            _obj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().UILayer, false);
+            _obj.transform.Find("back").GetComponent<Button>().onClick.AddListener(weishengend);
+        }
+
+        private int CheckSkillCount(/*int gameOver*/)
+        {
+            //if(gameOver != 0)
+            //{
+            //    return;
+            //}
             if(GameManager.SceneConfigId == 0)
             {
-                return;
+                return 0;
             }
             else if(GameManager.SceneConfigId == 4 && m_SceneStep == 3)
             {
                 LoadPerformEmemy();
                 Invoke("LoadTipPrefab2", 1.0f);
-                return;
+                return 0;
             }
             bool _ret = false;
             for (int _i = 0; _i < m_skillBtnList.Count; ++_i)
@@ -814,15 +936,22 @@ namespace MiniProj
             if(!_ret)
             {
                 RoundFail(null);
+                return 1;
             }
+            return 0;
         }
 
         public void RoundFail(EventArgs args)
         {
-            ReplayScene();
+            //加个判定是否过关了
+            if (!m_sceneWin)
+            {
+                //ReplayScene();
+                LoadFailpanel("力竭而亡");
+            }
         }
 
-        public int EnemyListUpdate()
+        public int EnemyListUpdate(int GameOver)
         {
             bool YuJiExist = UpdateYuJiPos();
             //清空所有enemy change 标记
@@ -838,7 +967,7 @@ namespace MiniProj
                 }
             }
 
-            int GameOver = 0;
+            //int GameOver = 0;
             //找一个enemy
             for (int _i = 0; _i < m_enemyList.Count; _i++)
             {
@@ -862,7 +991,6 @@ namespace MiniProj
             }
 
             //遍历所有enemy,播位置变化的动画,update
-            
             for (int _i = 0; _i < m_enemyList.Count; _i++)
             {
                 for (int _j = 0; _j < m_enemyList[_i].Count; _j++)
@@ -871,10 +999,9 @@ namespace MiniProj
                     {
 
                         m_enemyList[_i][_j].EnemyMove(_i, _j);
-                       // m_enemyList[_i][_j].Update();
+                        // m_enemyList[_i][_j].Update();
                     }
                 }
-
             }
             
 
@@ -888,7 +1015,10 @@ namespace MiniProj
                     //虞姬死了
                     Debug.Log("虞姬死了");
                     //ReplayScene();
-                    
+                    //if (!m_sceneWin)
+                    //{
+                    //    LoadFailpanel("虞姬阵亡");
+                    //}
                 }
                 else
                 {
@@ -897,6 +1027,10 @@ namespace MiniProj
                     //项羽死了
                     Debug.Log("项羽死了");
                     //ReplayScene();
+                    //if (!m_sceneWin)
+                    //{
+                    //    LoadFailpanel("项羽阵亡");
+                    //}
                 }
             }
 
@@ -1072,7 +1206,7 @@ namespace MiniProj
                         {
                             Material _material = m_tsfMapList[_i][playerCol].GetComponent<MeshRenderer>().material;
                             m_originColorList.Add(_material.GetColor("_Color"));
-                            _material.SetFloat("_EmissPower", 2.0f);
+                            _material.SetFloat("_EmissPower", EmissPower);
                             m_matList.Add(_material);
                             if(m_enemyList[_i][playerCol] != null)
                             {
@@ -1092,7 +1226,7 @@ namespace MiniProj
                         {
                             Material _material = m_tsfMapList[_i][playerCol].GetComponent<MeshRenderer>().material;
                             m_originColorList.Add(_material.GetColor("_Color"));
-                            _material.SetFloat("_EmissPower", 2.0f);
+                            _material.SetFloat("_EmissPower", EmissPower);
                             m_matList.Add(_material);
                             if(m_enemyList[_i][playerCol] != null)
                             {
@@ -1112,7 +1246,7 @@ namespace MiniProj
                         {
                             Material _material = m_tsfMapList[playerRow][_j].GetComponent<MeshRenderer>().material;
                             //m_originColorList.Add(_material.GetColor("_Color"));
-                            _material.SetFloat("_EmissPower", 2.0f);
+                            _material.SetFloat("_EmissPower", EmissPower);
                             m_matList.Add(_material);
                             if(m_enemyList[playerRow][_j] != null)
                             {
@@ -1132,7 +1266,7 @@ namespace MiniProj
                         {
                             Material _material = m_tsfMapList[playerRow][_j].GetComponent<MeshRenderer>().material;
                             //m_originColorList.Add(_material.GetColor("_Color"));
-                            _material.SetFloat("_EmissPower", 2.0f);
+                            _material.SetFloat("_EmissPower", EmissPower);
                             m_matList.Add(_material);
                             if(m_enemyList[playerRow][_j] != null)
                             {
@@ -1161,7 +1295,7 @@ namespace MiniProj
                                 {
                                     Material _material = m_tsfMapList[(playerRow - 1)][playerCol - 2].GetComponent<MeshRenderer>().material;
                                     //m_originColorList.Add(_material.GetColor("_Color"));
-                                    _material.SetFloat("_EmissPower", 2.0f);
+                                    _material.SetFloat("_EmissPower", EmissPower);
                                     m_matList.Add(_material);
                                 }
                                 
@@ -1180,7 +1314,7 @@ namespace MiniProj
                                 {
                                     Material _material = m_tsfMapList[playerRow - 1][ playerCol + 2].GetComponent<MeshRenderer>().material;
                                     //m_originColorList.Add(_material.GetColor("_Color"));
-                                    _material.SetFloat("_EmissPower", 2.0f);
+                                    _material.SetFloat("_EmissPower", EmissPower);
                                     m_matList.Add(_material);
                                 }                                 
                             }
@@ -1201,7 +1335,7 @@ namespace MiniProj
                                 {
                                     Material _material = m_tsfMapList[playerRow - 2][playerCol - 1].GetComponent<MeshRenderer>().material;
                                     //m_originColorList.Add(_material.GetColor("_Color"));
-                                    _material.SetFloat("_EmissPower", 2.0f);
+                                    _material.SetFloat("_EmissPower", EmissPower);
                                     m_matList.Add(_material);
                                 }
                             }
@@ -1219,7 +1353,7 @@ namespace MiniProj
                                 {
                                     Material _material = m_tsfMapList[playerRow - 2][playerCol + 1].GetComponent<MeshRenderer>().material;
                                     //m_originColorList.Add(_material.GetColor("_Color"));
-                                    _material.SetFloat("_EmissPower", 2.0f);
+                                    _material.SetFloat("_EmissPower", EmissPower);
                                     m_matList.Add(_material);
                                 }
                                 
@@ -1241,7 +1375,7 @@ namespace MiniProj
                                 {
                                     Material _material = m_tsfMapList[playerRow + 1][playerCol - 2].GetComponent<MeshRenderer>().material;
                                     //m_originColorList.Add(_material.GetColor("_Color"));
-                                    _material.SetFloat("_EmissPower", 2.0f);
+                                    _material.SetFloat("_EmissPower", EmissPower);
                                     m_matList.Add(_material);
                                 }
                                 
@@ -1260,7 +1394,7 @@ namespace MiniProj
                                 {
                                     Material _material = m_tsfMapList[playerRow + 1][playerCol + 2].GetComponent<MeshRenderer>().material;
                                     //m_originColorList.Add(_material.GetColor("_Color"));
-                                    _material.SetFloat("_EmissPower", 2.0f);
+                                    _material.SetFloat("_EmissPower", EmissPower);
                                     m_matList.Add(_material);
                                 }
                             }
@@ -1281,7 +1415,7 @@ namespace MiniProj
                                 {
                                     Material _material = m_tsfMapList[playerRow + 2][playerCol - 1].GetComponent<MeshRenderer>().material;
                                     //m_originColorList.Add(_material.GetColor("_Color"));
-                                    _material.SetFloat("_EmissPower", 2.0f);
+                                    _material.SetFloat("_EmissPower", EmissPower);
                                     m_matList.Add(_material);
                                 }
                                 
@@ -1300,7 +1434,7 @@ namespace MiniProj
                                 {
                                     Material _material = m_tsfMapList[playerRow + 2][playerCol + 1].GetComponent<MeshRenderer>().material;
                                     //m_originColorList.Add(_material.GetColor("_Color"));
-                                    _material.SetFloat("_EmissPower", 2.0f);
+                                    _material.SetFloat("_EmissPower", EmissPower);
                                     m_matList.Add(_material);
                                 }
                             }
@@ -1325,7 +1459,7 @@ namespace MiniProj
                                 {
                                     Material _material = m_tsfMapList[playerRow - 2][playerCol - 2].GetComponent<MeshRenderer>().material;
                                     //m_originColorList.Add(_material.GetColor("_Color"));
-                                    _material.SetFloat("_EmissPower", 2.0f);
+                                    _material.SetFloat("_EmissPower", EmissPower);
                                     m_matList.Add(_material);
                                 }
                                 
@@ -1344,7 +1478,7 @@ namespace MiniProj
                                 {
                                     Material _material = m_tsfMapList[playerRow - 2][playerCol + 2].GetComponent<MeshRenderer>().material;
                                     //m_originColorList.Add(_material.GetColor("_Color"));
-                                    _material.SetFloat("_EmissPower", 2.0f);
+                                    _material.SetFloat("_EmissPower", EmissPower);
                                     m_matList.Add(_material);
                                 }
                                 
@@ -1366,7 +1500,7 @@ namespace MiniProj
                                 {
                                     Material _material = m_tsfMapList[playerRow + 2][playerCol - 2].GetComponent<MeshRenderer>().material;
                                     //m_originColorList.Add(_material.GetColor("_Color"));
-                                    _material.SetFloat("_EmissPower", 2.0f);
+                                    _material.SetFloat("_EmissPower", EmissPower);
                                     m_matList.Add(_material);
                                 }
                                 
@@ -1385,7 +1519,7 @@ namespace MiniProj
                                 {
                                     Material _material = m_tsfMapList[playerRow + 2][playerCol + 2].GetComponent<MeshRenderer>().material;
                                     //m_originColorList.Add(_material.GetColor("_Color"));
-                                    _material.SetFloat("_EmissPower", 2.0f);
+                                    _material.SetFloat("_EmissPower", EmissPower);
                                     m_matList.Add(_material);
                                 }
                             }
@@ -1431,6 +1565,8 @@ namespace MiniProj
         public void ArriveSceneFinal()
         {
             m_sceneWin = true;
+            //m_yujiguoguan = true;
+            LoadWinpanel();
         }
     }
 }

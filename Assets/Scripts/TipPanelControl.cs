@@ -33,13 +33,13 @@ namespace MiniProj
             }
             else if(m_id == 3)
             {
-                GameObject _obj = (GameObject)GameManager.ResManager.LoadPrefabSync("Prefabs/TipPanel", "TipPanel4", typeof(GameObject));
+                GameObject _obj = (GameObject)GameManager.ResManager.LoadPrefabSync("Prefabs/TipPanel", "BackGround6", typeof(GameObject));
                 _obj.transform.SetParent(GameManager.GameManagerObj.GetComponent<GameManager>().UILayer, false);
             }
             else if(m_id == 4)
             {
                 SceneModule _sceneModule = (SceneModule)GameManager.GameManagerObj.GetComponent<GameManager>().GetModuleByName("SceneModule");
-                _sceneModule.GotoNextScene();
+                _sceneModule.Loadweisheng();
             }
         }
     }
