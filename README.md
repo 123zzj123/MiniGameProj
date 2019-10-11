@@ -8,7 +8,4 @@
 ## Assets/Scene
 场景文件，Scene.unity
 ## Assets/Scripts
-脚本文件：
-总控制器GameManager，包含资源管理器和模块管理
-资源控制器ResourceManager，使用引用计数进行控制，编辑器下使用正常资源，移动平台使用ab包。
-登陆模块为LoginModule，主界面为MainMenuModule，场景为SceneModule。其他根据业务扩展
+脚本文件
